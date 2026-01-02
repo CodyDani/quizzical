@@ -1,0 +1,39 @@
+import React from "react";
+import Buttons from "./Buttons";
+
+export default function OptionButton({ incorrect, correct }) {
+  const [allOptions, setAllOptions] = React.useState([...incorrect]);
+  const [selectedOption, setSelectedOption] = React.useState(null);
+
+  React.useEffect(() => {
+    function insertAtRandomIndex(newItem) {
+      const random = Math.floor(Math.random() * allOptions.length) + 1;
+
+      const updatedArray = [...incorrect];
+      updatedArray.splice(random, 0, newItem);
+
+      setAllOptions(updatedArray);
+    }
+
+    insertAtRandomIndex(correct);
+  }, []);
+
+  function handleSelectedAnswer(optionValue) {
+    setSelectedOption(optionValue);
+  }
+
+  return (
+    <div className="btns">
+      {allOptions.map((option, index) => {
+        return (
+          <Buttons
+            key={index}
+            value={option}
+            selectedOption={selectedOption}
+            handleSelectedAnswer={handleSelectedAnswer}
+          />
+        );
+      })}
+    </div>
+  );
+}
