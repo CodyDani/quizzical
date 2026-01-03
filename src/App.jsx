@@ -1,11 +1,17 @@
-//Create the Static version of the Start Page ---- DONE
-//Create the Static version of the Quiz Page --- DONE
-//Revamp it in React way, including making it composable and DRY --- DONE
-//Fetch Data and work with the fetched Data to output questions --- DONE
-//Create Logic for Starting new game --- DONE
-//Randomly mix the correct and incorrect options --- DONE
-//Create Logic for option buttons to select --- DONE
-//Create Logic for Submitting
+/**
+ * Backlog:
+ *
+ * ✅ Farewell messages in status section
+ * ✅ Create the Static version of the Start Page
+ * ✅ Create the Static version of the Quiz Page
+ * ✅ Revamp it in React way, including making it composable and DRY
+ * ✅ Fetch Data and work with the fetched Data to output questions
+ * ✅ Create Logic for Starting new game
+ * ✅ Randomly mix the correct and incorrect options
+ * ✅ Create Logic for option buttons to select
+ * Create Logic for Submitting
+ *
+ */
 
 import { useEffect, useState } from "react";
 import StartPage from "./components/StartPage";
@@ -15,6 +21,8 @@ export default function App() {
   const [allQuestions, setAllQuestions] = useState([]);
   const [startQuiz, setStartQuiz] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
+  const [score, setScore] = useState(0);
+  const [count, setCount] = useState(0);
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -26,7 +34,7 @@ export default function App() {
     };
 
     fetchQuestions();
-  }, []);
+  }, [count]);
 
   function handleCheckAnswers() {
     setIsGameOver(true);
@@ -34,11 +42,17 @@ export default function App() {
 
   function handlePlayAgain() {
     setIsGameOver(false);
-    setStartQuiz(true);
+    setCount((prev) => prev + 1);
   }
 
   const questionDetails = allQuestions.map((question) => {
-    return <Questions key={question.question} question={question} />;
+    return (
+      <Questions
+        key={question.question}
+        question={question}
+        isGameOver={isGameOver}
+      />
+    );
   });
 
   return (
@@ -52,7 +66,9 @@ export default function App() {
           <div className="final">
             {isGameOver ? (
               <>
-                <span>{`You scored 3/5 correct answers`}</span>
+                <span>{`You scored ${0}/${
+                  allQuestions.length
+                } correct answers`}</span>
                 <button onClick={handlePlayAgain}>Play again</button>
               </>
             ) : (

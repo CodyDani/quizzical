@@ -2,7 +2,7 @@ import React from "react";
 import OptionButton from "./OptionButton";
 import { decode } from "html-entities";
 
-export default function Questions({ question }) {
+export default function Questions({ question, isGameOver }) {
   const eachQuestion = decode(question.question);
 
   function decodeIncorrect(incorrectAnswers) {
@@ -19,7 +19,11 @@ export default function Questions({ question }) {
   return (
     <div className="question">
       <h1>{eachQuestion}</h1>
-      <OptionButton incorrect={incorrectAnswers} correct={correctAnswer} />
+      <OptionButton
+        incorrect={incorrectAnswers}
+        correct={correctAnswer}
+        isGameOver={isGameOver}
+      />
     </div>
   );
 }

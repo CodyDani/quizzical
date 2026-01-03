@@ -1,26 +1,25 @@
 import React from "react";
+import { clsx } from "clsx";
 
 export default function Buttons({
   value,
   selectedOption,
   handleSelectedAnswer,
+  correct,
+  isGameOver,
 }) {
   const isSelected = value === selectedOption;
+  const isCorrectAnswerSelected = isSelected === correct;
 
-  const buttonStyle = {
-    border: "none",
-    borderRadius: "7px",
-    padding: "5px",
-    border: "0.79px solid #4d5b9e",
-    fontSize: "10px",
-    fontFamily: '"inter", sans-serif',
-    cursor: "pointer",
-    background: !isSelected ? " #f5f7fb" : "#d6dbf5",
-    color: !isSelected ? "#4d5b9e" : "#293264",
-  };
+  const buttonStyle = clsx("option-button", {
+    selected: !isGameOver && isSelected,
+    correct: isGameOver && value === correct,
+    wrong: isGameOver && isSelected && value !== correct,
+    dimmed: isGameOver && value !== correct,
+  });
 
   return (
-    <button style={buttonStyle} onClick={() => handleSelectedAnswer(value)}>
+    <button className={buttonStyle} onClick={() => handleSelectedAnswer(value)}>
       {value}
     </button>
   );

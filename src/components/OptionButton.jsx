@@ -1,7 +1,7 @@
 import React from "react";
 import Buttons from "./Buttons";
 
-export default function OptionButton({ incorrect, correct }) {
+export default function OptionButton({ incorrect, correct, isGameOver }) {
   const [allOptions, setAllOptions] = React.useState([...incorrect]);
   const [selectedOption, setSelectedOption] = React.useState(null);
 
@@ -19,7 +19,10 @@ export default function OptionButton({ incorrect, correct }) {
   }, []);
 
   function handleSelectedAnswer(optionValue) {
-    setSelectedOption(optionValue);
+    if (isGameOver) return;
+    setSelectedOption((prevSelected) =>
+      optionValue === prevSelected ? null : optionValue
+    );
   }
 
   return (
@@ -31,6 +34,8 @@ export default function OptionButton({ incorrect, correct }) {
             value={option}
             selectedOption={selectedOption}
             handleSelectedAnswer={handleSelectedAnswer}
+            correct={correct}
+            isGameOver={isGameOver}
           />
         );
       })}
